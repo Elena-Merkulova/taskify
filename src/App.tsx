@@ -1,27 +1,30 @@
-import { useState } from 'react'
+import { useState, useReducer, useEffect } from 'react'
 import './App.css'
 import InputField from './components/InputField'
 import TodoList from './components/TodoList'
+import { appStateReducer, initialState } from './model'
 import { Todo } from './model'
 
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>('')
-  const [todos, setTodos] = useState<Todo[]>([])
 
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault()
+  const [todosState, dispatch] = useReducer(appStateReducer, [])
 
-    if (todo) {
-      setTodos([...todos, { id: Date.now(), todo, isDone: false }])
-      setTodo('')
-    }
-  }
+  // const [todos, setTodos] = useState<Todo[]>([])
+
+  // JSON.parse(localStorage.getItem('todos') || '')
+  // useEffect(()=>{
+  //   localStorage.setItem('todos', JSON.stringify(state))
+  // }, [state])
 
   return (
     <div className='App'>
       <span className='heading'>Taskify</span>
-      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-      <TodoList todos={todos} setTodos={setTodos}/>
+      <InputField todo={todo} setTodo={setTodo} todosDispatch={dispatch} />
+      <TodoList
+        todosState={todosState}
+        todosDispatch={dispatch}
+      />
     </div>
   )
 }

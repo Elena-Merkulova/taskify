@@ -1,37 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Todo } from '../model'
+import { Action, Todo } from '../model'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { MdDone } from 'react-icons/md'
 import './styles.css'
 
 type Props = {
   todo: Todo
-  todos: Todo[]
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  todosDispatch: React.Dispatch<Action>
 }
 
-const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
+const SingleTodo: React.FC<Props> = ({ todo, todosDispatch }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [editTodo, setEditTodo] = useState<string>(todo.todo)
 
   const handleDone = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
-      )
-    )
+    todosDispatch({
+      type: 'done',
+      payload: id,
+    })
   }
 
   const handleDelete = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id))
+    todosDispatch({
+      type: 'remove',
+      payload: id,
+    })
   }
 
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault()
 
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
-    )
+    todosDispatch({ type: 'edit', payloadContent: editTodo, payloadId: id })
     setEdit(false)
   }
 
