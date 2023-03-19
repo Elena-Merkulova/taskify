@@ -7,7 +7,7 @@ export interface Todo {
 export type Action =
 | {
     type: 'add'
-    payload: String
+    payload: string
 }
 | {
     type: 'remove'

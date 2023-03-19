@@ -2,7 +2,7 @@ import { useState, useReducer, useEffect } from 'react'
 import './App.css'
 import InputField from './components/InputField'
 import TodoList from './components/TodoList'
-import { appStateReducer, initialState } from './model'
+import { appStateReducer } from './model'
 import { Todo } from './model'
 
 const App: React.FC = () => {
@@ -22,7 +22,7 @@ const App: React.FC = () => {
       <span className='heading'>Taskify</span>
       <InputField todo={todo} setTodo={setTodo} todosDispatch={dispatch} />
       <TodoList
-        todosState={todosState}
+        todos={todosState}
         todosDispatch={dispatch}
       />
     </div>

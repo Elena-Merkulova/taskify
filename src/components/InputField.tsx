@@ -40,7 +40,7 @@ const InputField: React.FC<Props> = ({ todo, setTodo, todosDispatch }) => {
         className='input__box'
       />
       <button type='submit' className='input__submit'>
-        Go
+        GO
       </button>
     </form>
   )
