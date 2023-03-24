@@ -8,9 +8,17 @@ import { Todo } from './model'
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>('')
 
-  const [todosState, dispatch] = useReducer(appStateReducer, JSON.parse(localStorage.getItem('todos') || '{}'))
+  const [todosState, dispatch] = useReducer(appStateReducer, [] , init )
 
-  
+  function init() {
+    let preloadedState = localStorage.getItem('todos')
+    if (preloadedState) {
+      return JSON.parse(preloadedState)
+    } else {
+      return []
+    }
+  }
+
   useEffect(()=>{
     localStorage.setItem('todos', JSON.stringify(todosState))
   }, [todosState])
