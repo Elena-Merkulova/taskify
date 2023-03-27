@@ -124,3 +124,15 @@
     background-color: coral;
 }
 
+.dragactive {
+    background-color: gray ;
+}
+
+.dragcomplete {
+    background-color: #388ae2;
+}
+
+.drag {
+    box-shadow: 0 0 20px black;
+}
+
