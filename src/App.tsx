@@ -36,9 +36,10 @@ const App: React.FC = () => {
     )
       return
 
-      let add, active = todosState,
-      complete = completedTodos
-
+      let add
+      let active = todosState
+      let complete = completedTodos
+      //Source logic
       if(source.droppableId === 'TodosList') {
         add = active[source.index]
         active.splice(source.index, 1)
@@ -46,7 +47,7 @@ const App: React.FC = () => {
         add = complete[source.index];
         complete.splice(source.index, 1)
       }
-
+      //Destination logic
       if(destination.droppableId === "TodosList") {
         active.splice(destination.index, 0, add)
       } else {
