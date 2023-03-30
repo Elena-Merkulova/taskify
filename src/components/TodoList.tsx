@@ -58,7 +58,7 @@ const TodoList: React.FC<Props> = ({
                 todo={todo}
                 key={todo.id}
                 setTodos={setCompletedTodos}
-                todos={completedTodos}
+                todos={todos}
               />
             ))}
             {provided.placeholder}

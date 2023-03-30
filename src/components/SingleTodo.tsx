@@ -13,11 +13,7 @@ type Props = {
   todos: Todo[]
 }
 
-const SingleTodo: React.FC<Props> = ({
-  todo,
-  setTodos,
-  index,
-}) => {
+const SingleTodo: React.FC<Props> = ({ todo, setTodos, index, todos }) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [editTodo, setEditTodo] = useState<string>(todo.todo)
 

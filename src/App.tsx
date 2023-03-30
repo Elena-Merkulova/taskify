@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import InputField from './components/InputField'
 import TodoList from './components/TodoList'
@@ -11,6 +11,18 @@ const App: React.FC = () => {
   const {todos, setTodos} = useTodoReducer([])
 
   const {todos: completedTodos, setTodos: setCompletedTodos} = useTodoReducer([])
+
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (todo) {
+      setTodos({
+        type: 'add',
+        payload: todo,
+      })
+      setTodo('')
+    }
+  }
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result
@@ -29,7 +41,7 @@ const App: React.FC = () => {
       let active = todos
       let complete = completedTodos
       //Source logic
-      if(source.droppableId === 'TodosList') {
+      if (source.droppableId === 'TodosList') {
         add = active[source.index]
         active.splice(source.index, 1)
       } else {
@@ -37,26 +49,14 @@ const App: React.FC = () => {
         complete.splice(source.index, 1)
       }
       //Destination logic
-      if(destination.droppableId === "TodosList") {
+      if (destination.droppableId === "TodosList") {
         active.splice(destination.index, 0, add)
       } else {
         complete.splice(destination.index, 0, add)
       }
-
+      
       setCompletedTodos({type: 'move_todos', payload: complete})
       setTodos({ type: 'move_todos', payload: active })
-  }
-
-  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if (todo) {
-      setTodos({
-        type: 'add',
-        payload: todo,
-      })
-      setTodo('')
-    }
   }
 
   return (

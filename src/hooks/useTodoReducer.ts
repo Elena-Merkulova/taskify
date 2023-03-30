@@ -1,4 +1,4 @@
-import { useReducer } from "react"
+import { useReducer, useEffect } from "react"
 import { Todo } from "../model"
 
 export type Action =
@@ -52,21 +52,22 @@ const appStateReducer = (state: Todo[], action: Action): Todo[] => {
 }
 
 const useTodoReducer = (initialTodos: Todo[]) => {
-    const [todos, setTodos] = useReducer(appStateReducer, initialTodos, init)
+    const [todos, setTodos] = useReducer(appStateReducer, initialTodos)
+
+    // function init() {
+    //     let preloadedState = localStorage.getItem('todos')
+    //     if (preloadedState) {
+    //       return JSON.parse(preloadedState)
+    //     } else {
+    //       return []
+    //     }
+    //   }
+
+    // useEffect(() => {
+    //     localStorage.setItem('todos', JSON.stringify(todos))
+    //   }, [todos])
+
     return {todos, setTodos}
 }
-
-function init() {
-    let preloadedState = localStorage.getItem('todos')
-    if (preloadedState) {
-      return JSON.parse(preloadedState)
-    } else {
-      return []
-    }
-  }
-
-//   useEffect(() => {
-//     localStorage.setItem('todos', JSON.stringify(todos))
-//   }, [todos])
 
 export default useTodoReducer
