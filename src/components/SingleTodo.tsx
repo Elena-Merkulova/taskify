@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Action, Todo } from '../model'
+import { Todo } from '../model'
+import { Action } from '../hooks/useTodoReducer'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { MdDone } from 'react-icons/md'
 import './styles.css'
@@ -7,32 +8,37 @@ import { Draggable } from 'react-beautiful-dnd'
 
 type Props = {
   todo: Todo
-  todosDispatch: React.Dispatch<Action>
+  setTodos: React.Dispatch<Action>
   index: number
+  todos: Todo[]
 }
 
-const SingleTodo: React.FC<Props> = ({ todo, todosDispatch, index }) => {
+const SingleTodo: React.FC<Props> = ({
+  todo,
+  setTodos,
+  index,
+}) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [editTodo, setEditTodo] = useState<string>(todo.todo)
 
   const handleDone = (id: number) => {
-    todosDispatch({
+    setTodos({
       type: 'done',
       payload: id,
     })
   }
 
   const handleDelete = (id: number) => {
-    todosDispatch({
+    setTodos({
       type: 'remove',
       payload: id,
     })
   }
 
-  const handleEdit = (e: React.FormEvent, id: number) => {
+  const handleEdit = (e: React.FormEvent<HTMLFormElement>, id: number) => {
     e.preventDefault()
 
-    todosDispatch({ type: 'edit', payloadContent: editTodo, payloadId: id })
+    setTodos({ type: 'edit', payloadContent: editTodo, payloadId: id })
     setEdit(false)
   }
 

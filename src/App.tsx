@@ -1,43 +1,32 @@
-import { useState, useReducer, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import InputField from './components/InputField'
 import TodoList from './components/TodoList'
-import { appStateReducer } from './model'
-import { Todo } from './model'
+import useTodoReducer from './hooks/useTodoReducer'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>('')
 
-  const [todosState, dispatch] = useReducer(appStateReducer, [], init)
+  const {todos, setTodos} = useTodoReducer([])
 
-  const [completedTodos, setCompletedTodos] = useState<Todo[]>([])
-
-  function init() {
-    let preloadedState = localStorage.getItem('todos')
-    if (preloadedState) {
-      return JSON.parse(preloadedState)
-    } else {
-      return []
-    }
-  }
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todosState))
-  }, [todosState])
+  const {todos: completedTodos, setTodos: setCompletedTodos} = useTodoReducer([])
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result
-    if (!destination) return
+    if (!destination) {
+      return
+    } 
 
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
-    )
+    ) {
       return
+    }
 
       let add
-      let active = todosState
+      let active = todos
       let complete = completedTodos
       //Source logic
       if(source.droppableId === 'TodosList') {
@@ -54,18 +43,30 @@ const App: React.FC = () => {
         complete.splice(destination.index, 0, add)
       }
 
-      setCompletedTodos(complete)
-      dispatch(active)
+      setCompletedTodos({type: 'move_todos', payload: complete})
+      setTodos({ type: 'move_todos', payload: active })
+  }
+
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (todo) {
+      setTodos({
+        type: 'add',
+        payload: todo,
+      })
+      setTodo('')
+    }
   }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='App'>
         <span className='heading'>Taskify</span>
-        <InputField todo={todo} setTodo={setTodo} todosDispatch={dispatch} />
+        <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
         <TodoList
-          todos={todosState}
-          todosDispatch={dispatch}
+          todos={todos}
+          setTodos={setTodos}
           completedTodos={completedTodos}
           setCompletedTodos={setCompletedTodos}
         />

@@ -1,27 +1,15 @@
 import React, { useRef } from 'react'
 import './styles.css'
-import { Action } from '../model'
+ 
 
 interface Props {
   todo: string
   setTodo: React.Dispatch<React.SetStateAction<string>>
-  todosDispatch: React.Dispatch<Action>
+  handleAdd: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
-const InputField: React.FC<Props> = ({ todo, setTodo, todosDispatch }) => {
+const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (todo) {
-      todosDispatch({
-        type: 'add',
-        payload: todo,
-      })
-      setTodo('')
-    }
-  }
 
   return (
     <form

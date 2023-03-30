@@ -1,19 +1,20 @@
 import React from 'react'
-import { Todo, Action } from '../model'
+import { Todo } from '../model'
+import { Action } from '../hooks/useTodoReducer'
 import SingleTodo from './SingleTodo'
 import './styles.css'
 import { Droppable } from 'react-beautiful-dnd'
 
 interface Props {
   todos: Todo[]
-  todosDispatch: React.Dispatch<Action>
+  setTodos: React.Dispatch<Action>
   completedTodos: Todo[]
-  setCompletedTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  setCompletedTodos: React.Dispatch<Action>
 }
 
 const TodoList: React.FC<Props> = ({
   todos,
-  todosDispatch,
+  setTodos,
   completedTodos,
   setCompletedTodos,
 }) => {
@@ -28,12 +29,13 @@ const TodoList: React.FC<Props> = ({
           >
             <span className='todos__heading'>Active Tasks</span>
 
-            {todos?.map((todo, index) => (
+            {todos.map((todo, index) => (
               <SingleTodo
                 index={index}
                 todo={todo}
                 key={todo.id}
-                todosDispatch={todosDispatch}
+                todos={todos}
+                setTodos={setTodos}
               />
             ))}
             {provided.placeholder}
@@ -50,13 +52,13 @@ const TodoList: React.FC<Props> = ({
             {...provided.droppableProps}
           >
             <span className='todos__heading'>Completed Tasks</span>
-            {completedTodos?.map((todo, index) => (
+            {completedTodos.map((todo, index) => (
               <SingleTodo
                 index={index}
                 todo={todo}
                 key={todo.id}
-                todosDispatch={todosDispatch}
-                setCompletedTodos={setCompletedTodos}
+                setTodos={setCompletedTodos}
+                todos={completedTodos}
               />
             ))}
             {provided.placeholder}
